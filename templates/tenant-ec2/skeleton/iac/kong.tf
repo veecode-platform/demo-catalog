@@ -17,9 +17,15 @@ variable "kong_admin_token" {
 }
 
 provider "kong" {
+<<<<<<< Updated upstream
   admin_url       = var.kong_admin_url
   admin_token     = var.kong_admin_token
   tls_skip_verify = true
+=======
+  server_url       = var.kong_admin_url
+  admin_token      = var.kong_admin_token
+  tls_skip_verify  = true
+>>>>>>> Stashed changes
 }
 
 resource "kong_service" "tenant_service" {

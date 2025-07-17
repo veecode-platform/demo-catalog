@@ -14,5 +14,9 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.99.1"
     }
+    kong = {
+      source  = "kong/kong-gateway"
+      version = ">= 0.5.2"
+    }
   }
 }

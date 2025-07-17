@@ -92,9 +92,12 @@ spec:
 
     - title: Kong Configuration
       description: Configure the Kong Admin API credentials.
+<<<<<<< Updated upstream
       required:
         - kongAdminUrl
         - kongAdminToken
+=======
+>>>>>>> Stashed changes
       properties:
         kongAdminUrl:
           title: Kong Admin API URL
@@ -105,7 +108,11 @@ spec:
           title: Kong Admin Token
           description: Authentication token for Kong Admin API
           type: string
+<<<<<<< Updated upstream
           ui:widget: password
+=======
+          ui:field: Secret
+>>>>>>> Stashed changes
           default: "vkpr123"
 
   steps:
