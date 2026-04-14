@@ -91,7 +91,6 @@ spec:
       name: Publish
       action: publish:github
       input:
-        allowedHosts: ["github.com"]
         repoUrl: ${{ parameters.repoUrl }}
         token: ${{ secrets.USER_OAUTH_TOKEN }}
         defaultBranch: main
