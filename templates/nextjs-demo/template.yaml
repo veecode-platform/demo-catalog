@@ -29,7 +29,7 @@ spec:
 
     - title: Choose a location
       description: |
-        This section will ask for details about the Owner and Repository name which will then be used 
+        This section will ask for details about the Owner and Repository name which will then be used
         to create a repository in that location using your GitHub credentials.
       required:
         - repoUrl
@@ -37,7 +37,9 @@ spec:
         repoUrl:
           title: Enter an Owner and Repository Name
           description: |
-            The Owner should be your GitHub username. The Repository name should be a name that is not one that exists already in your GitHub account.
+            Repository location. When using the UI, the picker fills this automatically.
+            When calling via API or MCP, use the format: github.com?owner=<org-or-user>&repo=<repo-name>
+            Example: github.com?owner=veecode-platform&repo=my-project
           type: string
           ui:field: RepoUrlPicker
           ui:options:
@@ -67,7 +69,7 @@ spec:
       action: debug:log
       input:
         message: |
-          The following inputs were provided: 
+          The following inputs were provided:
             - Name: ${{ parameters.componentName }}
           The following inputs were pre-selected:
             - Repo URL: ${{ parameters.repoUrl }}
@@ -79,7 +81,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        token: ${{ secrets.USER_OAUTH_TOKEN or false }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
         values:
           componentName: ${{parameters.componentName}}
           owner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
@@ -91,7 +93,7 @@ spec:
       input:
         allowedHosts: ["github.com"]
         repoUrl: ${{ parameters.repoUrl }}
-        token: ${{ secrets.USER_OAUTH_TOKEN or false }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
         defaultBranch: main
         description: Repository Created by NextJs Demo Template
         repoVisibility: ${{ parameters.visibility }}
@@ -104,7 +106,7 @@ spec:
         buildType: "workflow"
         sourceBranch: main
         sourcePath: "/"
-        token: ${{ secrets.USER_OAUTH_TOKEN or false }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
 
     - id: dispatch-workflow
       name: Dispatch Github Action Workflow
@@ -113,7 +115,7 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         workflowId: deploy.yml
         branchOrTagName: main
-        token: ${{ secrets.USER_OAUTH_TOKEN or false }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
 
   output:
     links:
