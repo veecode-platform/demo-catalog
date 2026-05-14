@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: ${{ values.componentName }}
+
+server:
+  port: 8080
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when-authorized
+
+app:
+  sap:
+    host: ${SAP_HOST:not-set}
+    systemNumber: ${SAP_SYSTEM_NUMBER:00}
+    system: ${SAP_SYSTEM:${{ values.sapSystem }}}
+    client: ${SAP_CLIENT:100}
+    user: ${SAP_USER:not-set}
+    password: ${SAP_PASSWORD:not-set}

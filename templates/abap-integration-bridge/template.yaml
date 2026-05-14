@@ -1,0 +1,132 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: abap-integration-bridge
+  title: ABAP Integration Bridge — Java Service
+  description: |
+    Spring Boot 3 service that fronts an ABAP backend with a clean REST API.
+    Intended for modernizing legacy SAP/ABAP integrations: downstream consumers
+    talk REST/JSON to this bridge, and the bridge owns the protocol translation,
+    error mapping, and connection pooling to the ABAP side. Ships with an RFCAdapter
+    interface + stub implementation (swap in SAP JCo or HTTP-based RFC), configurable
+    SAP connection properties via env vars, BridgeController exposing
+    POST /bridge/{functionModule}. Java 21, Maven, multi-stage Dockerfile,
+    GitHub Actions CI. Use this when there is an existing ABAP system that's not going away.
+  tags:
+    - sankhya-demo
+    - java
+    - microservice
+    - spring-boot
+    - abap
+    - sap
+    - integration
+    - legacy
+spec:
+  owner: veecode-platform/demo
+  type: service
+
+  parameters:
+    - title: Service details
+      required:
+        - componentName
+        - description
+        - owner
+      properties:
+        componentName:
+          title: Component name
+          description: kebab-case identifier (e.g. sankhya-abap-bridge). Becomes the repo, Maven artifact, and Backstage component name.
+          type: string
+          pattern: '^[a-z][a-z0-9-]*[a-z0-9]$'
+          ui:autofocus: true
+        description:
+          title: Description
+          description: One-line summary of what the bridge integrates.
+          type: string
+        owner:
+          title: Owner
+          description: Owning team or user (e.g. group:default/payroll).
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
+
+    - title: SAP target
+      properties:
+        sapSystem:
+          title: Default SAP system identifier
+          description: System ID baked into application.yml as a default. Override per environment with SAP_SYSTEM env var.
+          type: string
+          default: ECC
+
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository location
+          description: |
+            GitHub destination. When using the UI, the picker fills this automatically.
+            When calling via API or MCP, use the format: github.com?owner=<org-or-user>&repo=<repo-name>
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+                  - workflow
+            allowedHosts:
+              - github.com
+        visibility:
+          title: Repository visibility
+          type: string
+          enum: [public, private]
+          enumNames: [Public, Private]
+          default: private
+
+  steps:
+    - id: fetch-skeleton
+      name: Fetch skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentName: ${{ parameters.componentName }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          sapSystem: ${{ parameters.sapSystem }}
+          repoOwner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+          repoName: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+        repoVisibility: ${{ parameters.visibility }}
+
+    - id: register
+      name: Register in catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - url: ${{ steps.publish.output.remoteUrl }}
+        title: Source code (GitHub)
+      - url: ${{ steps.register.output.entityRef }}
+        title: Component in catalog
+        icon: catalog
+    text:
+      - title: Next steps
+        content: |
+          1. Swap the `RFCAdapter` stub for a real implementation — SAP JCo if you have the licensed library, HTTP-based RFC gateway otherwise.
+          2. Set `SAP_HOST`, `SAP_SYSTEM_NUMBER`, `SAP_CLIENT`, `SAP_USER`, `SAP_PASSWORD` as env vars per environment.
+          3. Define the function modules your downstream callers will hit and map them through `BridgeController`.
