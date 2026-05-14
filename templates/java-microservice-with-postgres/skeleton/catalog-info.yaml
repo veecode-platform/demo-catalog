@@ -1,0 +1,31 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.componentName }}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: ${{ values.repoOwner }}/${{ values.repoName }}
+  tags:
+    - java
+    - spring-boot
+    - microservice
+    - postgres
+spec:
+  type: service
+  lifecycle: experimental
+  owner: ${{ values.owner }}
+  dependsOn:
+    - resource:default/${{ values.componentName }}-db
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ${{ values.componentName }}-db
+  description: Postgres database backing ${{ values.componentName }}.
+  tags:
+    - postgres
+    - rds
+    - aws
+spec:
+  type: database
+  owner: ${{ values.owner }}

@@ -1,0 +1,145 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: java-microservice-with-postgres
+  title: Java Microservice — Spring Boot + RDS Postgres
+  description: |
+    Spring Boot 3 service with persistence layer wired end-to-end: PostgreSQL driver,
+    Spring Data JPA, Flyway migrations. Ships with a Terraform module that provisions
+    an AWS RDS Postgres instance and outputs connection details ready to pipe into
+    GitHub Environment secrets. Java 21, Maven, multi-stage Dockerfile, GitHub Actions CI
+    that runs migrations against a Postgres service container. Use this when your service
+    OWNS its data — domain microservices, transactional APIs, write-heavy aggregators.
+    Picks up the slack of "I need a database for this service" so squads don't wait on
+    infra tickets to provision RDS by hand.
+  tags:
+    - sankhya-demo
+    - java
+    - microservice
+    - spring-boot
+    - postgres
+    - database
+    - terraform
+    - rds
+spec:
+  owner: veecode-platform/demo
+  type: service
+
+  parameters:
+    - title: Service details
+      required:
+        - componentName
+        - description
+        - owner
+      properties:
+        componentName:
+          title: Component name
+          description: kebab-case identifier (e.g. orders-api). Becomes the repo, Maven artifact, and Backstage component name.
+          type: string
+          pattern: '^[a-z][a-z0-9-]*[a-z0-9]$'
+          ui:autofocus: true
+        description:
+          title: Description
+          description: One-line summary of what the service does.
+          type: string
+        owner:
+          title: Owner
+          description: Owning team or user (e.g. group:default/payroll).
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: [Group, User]
+
+    - title: Database
+      required:
+        - dbName
+      properties:
+        dbName:
+          title: Database name
+          description: Postgres database name. Use snake_case (e.g. orders_api). Defaults to componentName with hyphens converted to underscores.
+          type: string
+          pattern: '^[a-z][a-z0-9_]*$'
+        instanceClass:
+          title: RDS instance class
+          description: Starting size — adjust per environment in the Terraform variables.
+          type: string
+          default: db.t4g.micro
+          enum:
+            - db.t4g.micro
+            - db.t4g.small
+            - db.t4g.medium
+            - db.t4g.large
+
+    - title: Repository
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository location
+          description: |
+            GitHub destination. When using the UI, the picker fills this automatically.
+            When calling via API or MCP, use the format: github.com?owner=<org-or-user>&repo=<repo-name>
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+                  - workflow
+            allowedHosts:
+              - github.com
+        visibility:
+          title: Repository visibility
+          type: string
+          enum: [public, private]
+          enumNames: [Public, Private]
+          default: private
+
+  steps:
+    - id: fetch-skeleton
+      name: Fetch skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentName: ${{ parameters.componentName }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          dbName: ${{ parameters.dbName }}
+          instanceClass: ${{ parameters.instanceClass }}
+          repoOwner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+          repoName: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+        repoVisibility: ${{ parameters.visibility }}
+
+    - id: register
+      name: Register in catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+  output:
+    links:
+      - url: ${{ steps.publish.output.remoteUrl }}
+        title: Source code (GitHub)
+      - url: ${{ steps.register.output.entityRef }}
+        title: Component in catalog
+        icon: catalog
+    text:
+      - title: Next steps
+        content: |
+          1. Review `terraform/` and set values for `vpc_id`, `subnet_ids`, `allowed_cidrs` in `terraform.tfvars`.
+          2. Apply Terraform — RDS endpoint + credentials come out as outputs.
+          3. Pipe outputs into GitHub Environment secrets (`DB_URL`, `DB_USER`, `DB_PASSWORD`) so CI and prod read them.

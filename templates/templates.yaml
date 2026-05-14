@@ -6,3 +6,6 @@ metadata:
 spec:
   targets:
     - ./nextjs-demo/template.yaml
+    - ./java-microservice-basic/template.yaml
+    - ./java-microservice-with-postgres/template.yaml
+    - ./abap-integration-bridge/template.yaml

@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.componentName }}
+  description: ${{ values.description }}
+  annotations:
+    github.com/project-slug: ${{ values.repoOwner }}/${{ values.repoName }}
+  tags:
+    - java
+    - spring-boot
+    - microservice
+    - abap
+    - sap
+    - integration
+spec:
+  type: service
+  lifecycle: experimental
+  owner: ${{ values.owner }}
