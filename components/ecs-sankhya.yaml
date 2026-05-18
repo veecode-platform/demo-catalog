@@ -1,0 +1,53 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: financial-api
+  title: Financial API
+  description: Serviço responsável pelo processamento financeiro e faturamento
+  annotations:
+    aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/financial-api"
+  tags:
+    - java
+    - ecs
+    - financeiro
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/platform-team
+  system: sankhya-erp
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: order-service
+  title: Order Service
+  description: Gerenciamento de pedidos e fluxo de vendas
+  annotations:
+    aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/order-service"
+  tags:
+    - java
+    - ecs
+    - pedidos
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/platform-team
+  system: sankhya-erp
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: integration-gateway
+  title: Integration Gateway
+  description: Gateway de integração com sistemas externos e ERPs parceiros
+  annotations:
+    aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/integration-gateway"
+  tags:
+    - gateway
+    - ecs
+    - integracao
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/platform-team
+  system: sankhya-erp
