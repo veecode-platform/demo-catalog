@@ -6,6 +6,8 @@ metadata:
   description: Serviço responsável pelo processamento financeiro e faturamento
   annotations:
     aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/financial-api"
+    gitlab.com/project-slug: "Elesiann/financial-api"
+    gitlab.com/project-id: "82340956"
   tags:
     - java
     - ecs
@@ -24,6 +26,8 @@ metadata:
   description: Gerenciamento de pedidos e fluxo de vendas
   annotations:
     aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/order-service"
+    gitlab.com/project-slug: "Elesiann/order-service"
+    gitlab.com/project-id: "82340960"
   tags:
     - java
     - ecs
@@ -42,6 +46,8 @@ metadata:
   description: Gateway de integração com sistemas externos e ERPs parceiros
   annotations:
     aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/integration-gateway"
+    gitlab.com/project-slug: "Elesiann/integration-gateway"
+    gitlab.com/project-id: "82340963"
   tags:
     - gateway
     - ecs
