@@ -42,6 +42,7 @@ metadata:
   description: Gateway de integração com sistemas externos e ERPs parceiros
   annotations:
     aws.amazon.com/amazon-ecs-service-arn: "arn:aws:ecs:us-east-1:904233116513:service/sankhya-demo/integration-gateway"
+    gitlab.com/project-slug: Elesiann/integration-gateway
   tags:
     - gateway
     - ecs
