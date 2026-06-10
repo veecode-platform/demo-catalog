@@ -16,6 +16,7 @@ metadata:
     github.com/project-slug: indorama-demo/supply-chain-api
     kong.io/service-id: supply-chain-api-v2
     backstage.io/kubernetes-label-selector: 'app=supply-chain-api'
+    backstage.io/kubernetes-namespace: indorama-demo
     grafana/dashboard-selector: "tags @> 'supply-chain'"
     grafana/overview-dashboard: 'https://indorama-grafana.saas.vee.codes/d/supply-chain-api?orgId=1&kiosk'
   links:
