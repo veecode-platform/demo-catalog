@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: data-lake-ingestion
+  title: Data Lake Ingestion
+  description: Pipelines de ingestão de dados industriais para o data lake — sensores IoT, ERP e sistemas legados
+  tags:
+    - python
+    - airflow
+    - spark
+    - data-engineering
+    - iot
+  annotations:
+    backstage.io/techdocs-ref: dir:./data-lake-ingestion
+    sonarqube.org/project-key: data-lake-ingestion
+    github.com/project-slug: indorama-demo/data-lake-ingestion
+spec:
+  type: service
+  lifecycle: production
+  owner: data-services
+  system: data-platform
+  consumesApis:
+    - supply-chain-api

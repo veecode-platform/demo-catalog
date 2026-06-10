@@ -1,0 +1,8 @@
+site_name: Quality Control Service
+site_description: Laudos, inspeções e conformidade regulatória
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Arquitetura: arquitetura.md
+  - Operação: operacao.md

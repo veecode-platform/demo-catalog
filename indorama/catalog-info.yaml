@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: indorama-demo-catalog
+  description: Demo Indovinya (Indorama Ventures) — catálogo autocontido; importado apenas pela instância indorama.saas.vee.codes
+spec:
+  targets:
+    - ./org.yaml
+    - ./systems.yaml
+    - ./components/erp-integration-service.yaml
+    - ./components/supply-chain-api.yaml
+    - ./components/logistics-tracker.yaml
+    - ./components/quality-control-service.yaml
+    - ./components/production-dashboard.yaml
+    - ./components/data-lake-ingestion.yaml
+    - ./apis/supply-chain-openapi.yaml
+    - ./apis/logistics-openapi.yaml
+    - ./templates/template-microservice.yaml
+    - ./templates/template-kong-api.yaml

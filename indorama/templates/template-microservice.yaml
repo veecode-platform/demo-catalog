@@ -1,0 +1,138 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: template-java-microservice
+  title: Criar Microserviço Java / Spring Boot
+  description: Provisiona um novo microserviço Java com estrutura padrão corporativa, pipeline CI/CD e registro automático no catálogo
+  tags:
+    - java
+    - spring-boot
+    - microservice
+    - recommended
+spec:
+  owner: platform-engineering
+  type: service
+  parameters:
+    - title: Informações do serviço
+      required:
+        - name
+        - description
+        - owner
+      properties:
+        name:
+          title: Nome do serviço
+          type: string
+          description: Identificador único (ex. inventory-service, order-processor)
+          pattern: '^[a-z][a-z0-9-]*$'
+          ui:autofocus: true
+        description:
+          title: Descrição
+          type: string
+          description: O que esse serviço faz?
+        owner:
+          title: Time responsável
+          type: string
+          description: Time que será dono desse componente no catálogo
+          enum:
+            - platform-engineering
+            - api-gateway-team
+            - data-services
+            - digital-products
+          enumNames:
+            - Platform Engineering
+            - API & Gateway Team
+            - Data Services
+            - Digital Products
+        system:
+          title: Sistema
+          type: string
+          description: A qual sistema esse serviço pertence?
+          enum:
+            - erp-ecosystem
+            - supply-chain-platform
+            - digital-platform
+            - data-platform
+          enumNames:
+            - ERP Ecosystem
+            - Supply Chain Platform
+            - Digital Platform
+            - Data Platform
+
+    - title: Configuração do repositório
+      required:
+        - repoName
+      properties:
+        repoName:
+          title: Nome do repositório
+          type: string
+          description: Nome do repositório Git que será criado
+        javaVersion:
+          title: Versão do Java
+          type: string
+          default: '21'
+          enum: ['17', '21']
+        springBootVersion:
+          title: Versão do Spring Boot
+          type: string
+          default: '3.3.0'
+          enum: ['3.2.0', '3.3.0']
+
+    - title: Exposição de API
+      properties:
+        exposeApi:
+          title: Esse serviço expõe uma API REST?
+          type: boolean
+          default: false
+        publishToKong:
+          title: Publicar no Kong Gateway automaticamente?
+          type: boolean
+          default: false
+
+  steps:
+    - id: fetch-template
+      name: Gerar estrutura do projeto
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          javaVersion: ${{ parameters.javaVersion }}
+          springBootVersion: ${{ parameters.springBootVersion }}
+
+    - id: publish
+      name: Criar repositório e publicar código
+      action: publish:github
+      input:
+        repoUrl: github.com?repo=${{ parameters.repoName }}&owner=indorama-platform
+        description: ${{ parameters.description }}
+        defaultBranch: main
+        repoVisibility: private
+
+    - id: register
+      name: Registrar no catálogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+    - id: notify
+      name: Notificar time
+      action: notification:send
+      input:
+        recipients:
+          entityRef: group:default/${{ parameters.owner }}
+        title: Novo serviço provisionado — ${{ parameters.name }}
+        message: |
+          O serviço *${{ parameters.name }}* foi criado e já está registrado no catálogo.
+          Repositório: ${{ steps.publish.output.remoteUrl }}
+
+  output:
+    links:
+      - title: Repositório Git
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Ver no catálogo
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}

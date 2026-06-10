@@ -1,0 +1,114 @@
+---
+# Groups / Times
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-engineering
+  title: Platform Engineering
+  description: Time responsável pela infraestrutura de plataforma, IDP e ferramentas de desenvolvimento
+spec:
+  type: team
+  profile:
+    displayName: Platform Engineering
+    email: platform@indorama.com
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: api-gateway-team
+  title: API & Gateway Team
+  description: Gestão de APIs, Kong Gateway e integração entre sistemas
+spec:
+  type: team
+  profile:
+    displayName: API & Gateway Team
+    email: api-team@indorama.com
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: data-services
+  title: Data Services
+  description: Engenharia de dados, pipelines e data lake
+spec:
+  type: team
+  profile:
+    displayName: Data Services
+    email: data@indorama.com
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: digital-products
+  title: Digital Products
+  description: Produtos digitais, frontend e experiência do usuário
+spec:
+  type: team
+  profile:
+    displayName: Digital Products
+    email: digital@indorama.com
+  children: []
+---
+# Users
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: ana.silva
+  title: Ana Silva
+spec:
+  profile:
+    displayName: Ana Silva
+    email: ana.silva@indorama.com
+    picture: https://avatars.dicebear.com/api/avataaars/ana.svg
+  memberOf: [platform-engineering]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: carlos.mendes
+  title: Carlos Mendes
+spec:
+  profile:
+    displayName: Carlos Mendes
+    email: carlos.mendes@indorama.com
+    picture: https://avatars.dicebear.com/api/avataaars/carlos.svg
+  memberOf: [api-gateway-team]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: fernanda.costa
+  title: Fernanda Costa
+spec:
+  profile:
+    displayName: Fernanda Costa
+    email: fernanda.costa@indorama.com
+    picture: https://avatars.dicebear.com/api/avataaars/fernanda.svg
+  memberOf: [data-services]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: rodrigo.lima
+  title: Rodrigo Lima
+spec:
+  profile:
+    displayName: Rodrigo Lima
+    email: rodrigo.lima@indorama.com
+    picture: https://avatars.dicebear.com/api/avataaars/rodrigo.svg
+  memberOf: [digital-products]
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: mariana.santos
+  title: Mariana Santos
+spec:
+  profile:
+    displayName: Mariana Santos
+    email: mariana.santos@indorama.com
+    picture: https://avatars.dicebear.com/api/avataaars/mariana.svg
+  memberOf: [platform-engineering]

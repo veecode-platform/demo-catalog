@@ -1,0 +1,8 @@
+site_name: ERP Integration Service
+site_description: Integração com SAP ERP — pedidos, estoque e financeiro
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Arquitetura: arquitetura.md
+  - Operação: operacao.md

@@ -1,0 +1,34 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: erp-integration-service
+  title: ERP Integration Service
+  description: Serviço de integração com SAP ERP — sincronização de pedidos, estoque e financeiro
+  tags:
+    - java
+    - spring-boot
+    - sap
+    - integration
+    - critical
+  annotations:
+    backstage.io/techdocs-ref: dir:./erp-integration-service
+    sonarqube.org/project-key: erp-integration-service
+    github.com/project-slug: indorama-demo/erp-integration-service
+  links:
+    - url: https://indorama-grafana.saas.vee.codes
+      title: Grafana
+      icon: dashboard
+    - url: https://api.indorama.com/erp/actuator/health
+      title: Health Check
+      icon: health
+    - url: https://indorama.saas.vee.codes/docs/default/component/erp-integration-service/operacao/
+      title: Runbook
+      icon: docs
+spec:
+  type: service
+  lifecycle: production
+  owner: platform-engineering
+  system: erp-ecosystem
+  dependsOn:
+    - component:default/supply-chain-api
+  providesApis: []

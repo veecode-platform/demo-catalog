@@ -1,0 +1,8 @@
+site_name: Data Lake Ingestion
+site_description: Pipelines de ingestão de dados industriais
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Arquitetura: arquitetura.md
+  - Operação: operacao.md

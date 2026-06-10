@@ -1,0 +1,7 @@
+site_name: Logistics API (contrato)
+site_description: Guia de uso da Logistics API
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Guia de Uso: guia-de-uso.md

@@ -1,0 +1,36 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: supply-chain-api
+  title: Supply Chain API
+  description: API REST de gestão da cadeia de suprimentos — pedidos, fornecedores e rastreamento
+  tags:
+    - java
+    - spring-boot
+    - rest
+    - kong
+    - supply-chain
+  annotations:
+    backstage.io/techdocs-ref: dir:./supply-chain-api
+    sonarqube.org/project-key: supply-chain-api
+    github.com/project-slug: indorama-demo/supply-chain-api
+    kong.io/service-id: supply-chain-api-v2
+    backstage.io/kubernetes-label-selector: 'app=supply-chain-api'
+    grafana/dashboard-selector: "tags @> 'supply-chain'"
+    grafana/overview-dashboard: 'https://indorama-grafana.saas.vee.codes/d/supply-chain-api?orgId=1&kiosk'
+  links:
+    - url: https://indorama-grafana.saas.vee.codes/d/supply-chain-api
+      title: Grafana Dashboard
+      icon: dashboard
+    - url: https://indorama.saas.vee.codes/catalog/default/api/supply-chain-api/definition
+      title: API Docs
+      icon: api
+spec:
+  type: service
+  lifecycle: production
+  owner: api-gateway-team
+  system: supply-chain-platform
+  providesApis:
+    - supply-chain-api
+  consumesApis:
+    - logistics-api

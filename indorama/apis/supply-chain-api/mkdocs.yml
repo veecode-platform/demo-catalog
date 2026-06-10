@@ -1,0 +1,7 @@
+site_name: Supply Chain API (contrato)
+site_description: Guia de uso da Supply Chain API
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Guia de Uso: guia-de-uso.md

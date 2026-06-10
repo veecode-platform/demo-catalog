@@ -1,0 +1,5 @@
+site_name: Supply Chain Platform
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md

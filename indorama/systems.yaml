@@ -1,0 +1,57 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: industrial-operations
+  title: Industrial Operations
+  description: Domínio de operações industriais e cadeia produtiva
+spec:
+  owner: platform-engineering
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: erp-ecosystem
+  title: ERP Ecosystem
+  description: Integração com sistemas ERP (SAP) e processos de back-office
+  annotations:
+    backstage.io/techdocs-ref: dir:./systems-docs/erp-ecosystem
+spec:
+  owner: platform-engineering
+  domain: industrial-operations
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: supply-chain-platform
+  title: Supply Chain Platform
+  description: Plataforma de gestão da cadeia de suprimentos
+  annotations:
+    backstage.io/techdocs-ref: dir:./systems-docs/supply-chain-platform
+spec:
+  owner: api-gateway-team
+  domain: industrial-operations
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: digital-platform
+  title: Digital Platform
+  description: Plataforma de produtos digitais e experiência do cliente
+  annotations:
+    backstage.io/techdocs-ref: dir:./systems-docs/digital-platform
+spec:
+  owner: digital-products
+  domain: industrial-operations
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: data-platform
+  title: Data Platform
+  description: Plataforma de dados, analytics e machine learning
+  annotations:
+    backstage.io/techdocs-ref: dir:./systems-docs/data-platform
+spec:
+  owner: data-services
+  domain: industrial-operations

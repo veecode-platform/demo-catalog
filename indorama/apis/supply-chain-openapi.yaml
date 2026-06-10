@@ -1,0 +1,193 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: supply-chain-api
+  title: Supply Chain API
+  description: API de gestão da cadeia de suprimentos — pedidos, fornecedores, estoque e rastreamento
+  tags:
+    - rest
+    - openapi
+    - supply-chain
+    - kong
+  annotations:
+    backstage.io/techdocs-ref: dir:./supply-chain-api
+spec:
+  type: openapi
+  lifecycle: production
+  owner: api-gateway-team
+  system: supply-chain-platform
+  definition: |
+    openapi: "3.0.3"
+    info:
+      title: Supply Chain API
+      version: "2.0.0"
+      description: |
+        API de gestão da cadeia de suprimentos da Indorama.
+        Gerencia pedidos de compra, relacionamento com fornecedores,
+        controle de estoque e rastreamento de materiais.
+      contact:
+        name: API & Gateway Team
+        email: api-team@indorama.com
+    servers:
+      - url: https://api.indorama.com/supply-chain/v2
+        description: Produção
+    paths:
+      /orders:
+        get:
+          summary: Listar pedidos de compra
+          tags: [Orders]
+          parameters:
+            - name: status
+              in: query
+              schema:
+                type: string
+                enum: [pending, approved, shipped, delivered, cancelled]
+            - name: supplier_id
+              in: query
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Lista de pedidos
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+        post:
+          summary: Criar pedido de compra
+          tags: [Orders]
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/CreateOrderRequest"
+          responses:
+            "201":
+              description: Pedido criado
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/Order"
+      /orders/{orderId}:
+        get:
+          summary: Buscar pedido por ID
+          tags: [Orders]
+          parameters:
+            - name: orderId
+              in: path
+              required: true
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Pedido encontrado
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/Order"
+            "404":
+              description: Pedido não encontrado
+      /suppliers:
+        get:
+          summary: Listar fornecedores homologados
+          tags: [Suppliers]
+          responses:
+            "200":
+              description: Lista de fornecedores
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Supplier"
+      /inventory/{materialCode}:
+        get:
+          summary: Consultar estoque de material
+          tags: [Inventory]
+          parameters:
+            - name: materialCode
+              in: path
+              required: true
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Posição de estoque
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/InventoryPosition"
+    components:
+      schemas:
+        Order:
+          type: object
+          properties:
+            id:
+              type: string
+            supplier_id:
+              type: string
+            material_code:
+              type: string
+            quantity:
+              type: number
+            unit:
+              type: string
+            status:
+              type: string
+              enum: [pending, approved, shipped, delivered, cancelled]
+            created_at:
+              type: string
+              format: date-time
+        CreateOrderRequest:
+          type: object
+          required: [supplier_id, material_code, quantity, unit]
+          properties:
+            supplier_id:
+              type: string
+            material_code:
+              type: string
+            quantity:
+              type: number
+            unit:
+              type: string
+            notes:
+              type: string
+        Supplier:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            country:
+              type: string
+            category:
+              type: string
+            compliance_status:
+              type: string
+              enum: [approved, under_review, suspended]
+        InventoryPosition:
+          type: object
+          properties:
+            material_code:
+              type: string
+            description:
+              type: string
+            quantity_on_hand:
+              type: number
+            unit:
+              type: string
+            reorder_point:
+              type: number
+            last_updated:
+              type: string
+              format: date-time
+      securitySchemes:
+        bearerAuth:
+          type: http
+          scheme: bearer
+    security:
+      - bearerAuth: []

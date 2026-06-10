@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: quality-control-service
+  title: Quality Control Service
+  description: Gestão de controle de qualidade — laudos, inspeções e conformidade regulatória
+  tags:
+    - python
+    - fastapi
+    - quality
+    - compliance
+    - critical
+  annotations:
+    backstage.io/techdocs-ref: dir:./quality-control-service
+    sonarqube.org/project-key: quality-control-service
+    github.com/project-slug: indorama-demo/quality-control-service
+  links:
+    - url: https://indorama.saas.vee.codes/docs/default/component/quality-control-service
+      title: Documentação
+      icon: docs
+spec:
+  type: service
+  lifecycle: production
+  owner: data-services
+  system: data-platform
+  consumesApis:
+    - supply-chain-api

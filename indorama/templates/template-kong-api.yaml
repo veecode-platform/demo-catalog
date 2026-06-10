@@ -1,0 +1,72 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: template-kong-api
+  title: Publicar API no Kong Gateway
+  description: Publica uma API do catálogo no Kong Gateway — gera a configuração declarativa via decK a partir da spec OpenAPI e sincroniza no gateway, sem ticket de infra
+  tags:
+    - api
+    - kong
+    - openapi
+    - recommended
+spec:
+  owner: api-gateway-team
+  type: api
+  parameters:
+    - title: Selecionar API do catálogo
+      required:
+        - apiEntity
+      properties:
+        apiEntity:
+          title: API
+          type: string
+          description: API do catálogo cuja spec OpenAPI será publicada no gateway
+          ui:field: EntityPicker
+          ui:options:
+            catalogFilter:
+              kind: API
+              spec.type: openapi
+
+  steps:
+    - id: ping
+      name: Verificar conectividade com o Kong
+      action: veecode:kong:deck:ping
+      input:
+        kongAddr: http://kong.indorama-demo.svc.cluster.local:8001
+
+    - id: fetch-api
+      name: Buscar spec OpenAPI no catálogo
+      action: catalog:fetch
+      input:
+        entityRef: ${{ parameters.apiEntity }}
+
+    # O replace troca o host de produção da spec pelo upstream do ambiente da demo
+    - id: generate
+      name: Gerar configuração declarativa (decK)
+      action: veecode:kong:deck:generate
+      input:
+        openapiSpec: ${{ steps['fetch-api'].output.entity.spec.definition | replace("https://api.indorama.com/supply-chain/v2", "http://supply-chain-upstream.indorama-demo.svc.cluster.local") | replace("https://api.indorama.com/logistics/v1", "http://supply-chain-upstream.indorama-demo.svc.cluster.local") }}
+        deckTag: ${{ parameters.apiEntity | parseEntityRef | pick('name') }}
+        removePathEOLAnchor: true
+
+    - id: sync
+      name: Sincronizar no Kong Gateway
+      action: veecode:kong:deck:sync
+      input:
+        kongConfigPath: kong.yaml
+        kongAddr: http://kong.indorama-demo.svc.cluster.local:8001
+        deckTag: ${{ parameters.apiEntity | parseEntityRef | pick('name') }}
+
+  output:
+    links:
+      - title: Testar rota publicada — GET /orders
+        url: https://indorama-gw.saas.vee.codes/orders
+    text:
+      - title: API publicada no gateway
+        content: |
+          A configuração foi gerada a partir da spec OpenAPI e sincronizada no Kong.
+          Teste pelo proxy do gateway:
+
+          ```sh
+          curl https://indorama-gw.saas.vee.codes/orders
+          ```

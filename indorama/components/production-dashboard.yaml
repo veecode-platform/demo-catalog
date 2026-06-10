@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: production-dashboard
+  title: Production Dashboard
+  description: Portal web de acompanhamento de produção, KPIs industriais e alertas operacionais
+  tags:
+    - react
+    - typescript
+    - frontend
+    - dashboard
+  annotations:
+    backstage.io/techdocs-ref: dir:./production-dashboard
+    sonarqube.org/project-key: production-dashboard
+    github.com/project-slug: indorama-demo/production-dashboard
+  links:
+    - url: https://dashboard.indorama.com
+      title: Live Dashboard
+      icon: web
+spec:
+  type: website
+  lifecycle: production
+  owner: digital-products
+  system: digital-platform
+  consumesApis:
+    - supply-chain-api
+    - logistics-api

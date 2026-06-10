@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: logistics-tracker
+  title: Logistics Tracker
+  description: Rastreamento em tempo real de cargas e transporte via integrações com transportadoras
+  tags:
+    - nodejs
+    - typescript
+    - real-time
+    - websocket
+    - logistics
+  annotations:
+    backstage.io/techdocs-ref: dir:./logistics-tracker
+    sonarqube.org/project-key: logistics-tracker
+    github.com/project-slug: indorama-demo/logistics-tracker
+    kong.io/service-id: logistics-tracker-v1
+  links:
+    - url: https://tracker.indorama.com
+      title: Dashboard
+      icon: dashboard
+spec:
+  type: service
+  lifecycle: production
+  owner: digital-products
+  system: digital-platform
+  providesApis:
+    - logistics-api
+  consumesApis:
+    - supply-chain-api

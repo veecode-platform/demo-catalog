@@ -1,0 +1,8 @@
+site_name: Supply Chain API
+site_description: API REST de gestão da cadeia de suprimentos
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Arquitetura: arquitetura.md
+  - Operação: operacao.md

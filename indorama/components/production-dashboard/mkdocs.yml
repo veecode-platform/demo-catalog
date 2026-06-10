@@ -1,0 +1,8 @@
+site_name: Production Dashboard
+site_description: Portal de acompanhamento de produção e KPIs industriais
+plugins:
+  - techdocs-core
+nav:
+  - Visão Geral: index.md
+  - Arquitetura: arquitetura.md
+  - Operação: operacao.md
