@@ -29,7 +29,7 @@ spec:
         name: API & Gateway Team
         email: api-team@indorama.com
     servers:
-      - url: https://api.indorama.com/supply-chain/v2
+      - url: https://indorama-gw.saas.vee.codes
         description: Produção
     paths:
       /orders:
