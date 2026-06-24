@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: relatorio-loja
+  description: Gerador de relatórios de performance de loja — componente legado
+  tags: [legado, relatorio]
+spec:
+  type: service
+  lifecycle: deprecated
+  owner: plataforma

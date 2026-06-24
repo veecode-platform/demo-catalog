@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: ana.ribeiro
+  description: Engenheira de IA
+spec:
+  profile:
+    displayName: Ana Ribeiro
+    email: ana.ribeiro@aurora-varejo.com.br
+  memberOf:
+    - equipe-ia
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: bruno.dias
+  description: Engenheiro de plataforma
+spec:
+  profile:
+    displayName: Bruno Dias
+    email: bruno.dias@aurora-varejo.com.br
+  memberOf:
+    - plataforma

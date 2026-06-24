@@ -1,0 +1,7 @@
+apiVersion: backstage.io/v1alpha1
+kind: Domain
+metadata:
+  name: aurora-varejo
+  description: Domínio de negócio da Aurora Varejo — varejo com 650 lojas
+spec:
+  owner: plataforma

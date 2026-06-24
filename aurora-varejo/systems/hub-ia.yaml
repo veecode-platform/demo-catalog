@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: hub-ia
+  description: Hub de serviços de inteligência artificial da Aurora Varejo
+spec:
+  owner: equipe-ia
+  domain: aurora-varejo

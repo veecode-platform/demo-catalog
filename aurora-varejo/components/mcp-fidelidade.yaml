@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mcp-fidelidade
+  description: Agente MCP para programa de fidelidade — pontos, recompensas e personalização
+  tags: [ai-model, mcp, fidelidade]
+spec:
+  type: ai-model
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia

@@ -1,0 +1,18 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: aurora-varejo-catalog
+  description: Catálogo completo da Aurora Varejo — tenant demo para Clamed
+spec:
+  targets:
+    - ./org/groups.yaml
+    - ./org/users.yaml
+    - ./domains/ia.yaml
+    - ./systems/hub-ia.yaml
+    - ./systems/integracao.yaml
+    - ./components/mcp-estoque.yaml
+    - ./components/mcp-precos.yaml
+    - ./components/mcp-fidelidade.yaml
+    - ./components/relatorio-loja.yaml
+    - ./apis/api-estoque.yaml
+    - ./apis/api-atendimento.yaml

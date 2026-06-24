@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: api-estoque
+  description: API REST para consulta de estoque por SKU e loja
+spec:
+  type: openapi
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia
+  definition: |
+    openapi: "3.0.0"
+    info:
+      title: API Estoque Aurora
+      version: "1.0"
+    paths:
+      /estoque/{sku}:
+        get:
+          summary: Consulta estoque por SKU
+          parameters:
+            - name: sku
+              in: path
+              required: true
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Dados de estoque

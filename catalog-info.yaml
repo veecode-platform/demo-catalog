@@ -10,3 +10,5 @@ spec:
     - ./environments/environments.yaml
     - ./clusters/clusters.yaml
     - ./components/components.yaml
+    - ./aurora-varejo/catalog-info.yaml
+    - ./aurora-varejo/templates/aurora-microservice/template.yaml

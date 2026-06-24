@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: equipe-ia
+  description: Time responsável pelos serviços de IA da Aurora Varejo
+spec:
+  type: team
+  profile:
+    displayName: Equipe IA
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: plataforma
+  description: Time de plataforma e infraestrutura
+spec:
+  type: team
+  profile:
+    displayName: Plataforma
+  children: []

@@ -1,0 +1,72 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: aurora-microservice
+  title: Microsserviço Aurora (com testes + segurança)
+  description: |
+    Spring Boot 3 microservice nascido com testes (JUnit 5) e varredura de
+    segurança (Trivy) no CI. Maven, Java 21, Docker multi-stage, /actuator/health.
+  tags: [aurora, java, microservice, spring-boot, maven]
+spec:
+  owner: plataforma
+  type: service
+  parameters:
+    - title: Detalhes do serviço
+      required: [name, description]
+      properties:
+        name:
+          title: Nome do componente
+          description: Identificador em kebab-case (ex. mcp-pagamentos).
+          type: string
+          pattern: '^[a-z][a-z0-9-]*[a-z0-9]$'
+          ui:autofocus: true
+        description:
+          title: Descrição
+          type: string
+    - title: Repositório
+      required: [repoUrl]
+      properties:
+        repoUrl:
+          title: Destino no GitHub
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts: [github.com]
+        visibility:
+          title: Visibilidade do repositório
+          type: string
+          enum: [public, private]
+          enumNames: [Público, Privado]
+          default: public
+  steps:
+    - id: fetch-skeleton
+      name: Montar skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentName: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          repoOwner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+          repoName: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+    - id: publish
+      name: Publicar no GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+        repoVisibility: ${{ parameters.visibility }}
+    - id: register
+      name: Registrar no catálogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+  output:
+    links:
+      - url: ${{ steps.publish.output.remoteUrl }}
+        title: Código-fonte (GitHub)
+      - url: ${{ steps.register.output.entityRef }}
+        title: Componente no catálogo
+        icon: catalog

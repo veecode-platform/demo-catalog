@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: mcp-precos
+  description: Agente MCP para precificação dinâmica baseada em demanda e concorrência
+  tags: [ai-model, mcp, precos]
+spec:
+  type: ai-model
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia

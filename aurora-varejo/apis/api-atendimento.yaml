@@ -1,0 +1,28 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: api-atendimento
+  description: API de atendimento ao cliente — histórico, NPS e chamados
+spec:
+  type: openapi
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia
+  definition: |
+    openapi: "3.0.0"
+    info:
+      title: API Atendimento Aurora
+      version: "1.0"
+    paths:
+      /clientes/{id}/historico:
+        get:
+          summary: Histórico do cliente
+          parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                type: string
+          responses:
+            "200":
+              description: Histórico de atendimentos

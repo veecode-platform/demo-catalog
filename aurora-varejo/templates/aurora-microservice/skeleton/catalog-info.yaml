@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.componentName }}
+  description: ${{ values.description }}
+  tags: [java, spring-boot, microservice, aurora]
+spec:
+  type: service
+  lifecycle: experimental
+  owner: plataforma
+  system: integracoes-de-loja

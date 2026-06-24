@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: integracoes-de-loja
+  description: Sistema de integrações operacionais das lojas físicas
+spec:
+  owner: plataforma
+  domain: aurora-varejo
