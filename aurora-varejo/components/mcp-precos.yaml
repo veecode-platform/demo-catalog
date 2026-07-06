@@ -4,8 +4,12 @@ metadata:
   name: mcp-precos
   description: Agente MCP para precificação dinâmica baseada em demanda e concorrência
   tags: [ai-model, mcp, precos]
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/veecode-platform/demo-catalog/tree/main/aurora-varejo/techdocs/mcp-precos
 spec:
   type: ai-model
   lifecycle: production
   owner: equipe-ia
   system: hub-ia
+  providesApis:
+    - mcp-precos-tools

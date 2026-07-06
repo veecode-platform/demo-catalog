@@ -1,0 +1,38 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.componentName }}
+  description: ${{ values.description }}
+  tags: [ai-model, mcp]
+  annotations:
+    github.com/project-slug: ${{ values.repoOwner }}/${{ values.repoName }}
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: ai-model
+  lifecycle: experimental
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}
+  providesApis:
+    - ${{ values.componentName }}-tools
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: ${{ values.componentName }}-tools
+  title: ${{ values.componentName }} — Tools
+  description: Contrato MCP de ${{ values.componentName }}
+  tags: [mcp, ai]
+spec:
+  type: mcp
+  lifecycle: experimental
+  owner: ${{ values.owner }}
+  system: ${{ values.system }}
+  definition: |
+    # MCP tools/list — ${{ values.componentName }} v0.1.0
+    # Transporte: streamable-http | Auth: OAuth 2.1 (client credentials)
+    tools:
+      - name: ${{ values.firstTool }}
+        description: ${{ values.firstToolDescription }}
+        inputSchema:
+          type: object
+          properties: {}

@@ -1,0 +1,48 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: mcp-estoque-tools
+  title: MCP Estoque — Tools
+  description: Contrato MCP do agente de estoque — tools expostas via tools/list
+  tags: [mcp, estoque, ai]
+spec:
+  type: mcp
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia
+  definition: |
+    # MCP tools/list — mcp-estoque v1.4.2
+    # Transporte: streamable-http | Auth: OAuth 2.1 (client credentials)
+    tools:
+      - name: consultar_estoque
+        description: Consulta saldo de estoque de um SKU, opcionalmente filtrado por loja
+        inputSchema:
+          type: object
+          properties:
+            sku:
+              type: string
+              description: Código SKU do produto
+            loja:
+              type: string
+              description: Código da loja (ex. LJ-0042); omitir para consolidado da rede
+          required: [sku]
+      - name: reservar_estoque
+        description: Reserva quantidade de um SKU para retirada em loja (expira em 24h)
+        inputSchema:
+          type: object
+          properties:
+            sku: { type: string }
+            loja: { type: string }
+            quantidade: { type: integer, minimum: 1 }
+            cliente_id: { type: string }
+          required: [sku, loja, quantidade, cliente_id]
+      - name: consultar_transferencias
+        description: Lista transferências de estoque em trânsito entre lojas
+        inputSchema:
+          type: object
+          properties:
+            loja_origem: { type: string }
+            loja_destino: { type: string }
+            status:
+              type: string
+              enum: [pendente, em_transito, recebida]

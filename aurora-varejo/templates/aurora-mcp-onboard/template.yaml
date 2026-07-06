@@ -1,0 +1,94 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: aurora-mcp-onboard
+  title: Onboard de MCP server (catalogado + documentado)
+  description: |
+    Registra um MCP server no ecossistema Aurora: repositório padronizado com
+    metadata de catálogo (Component + contrato de tools como API), documentação
+    TechDocs e dono definido. O MCP nasce governado — visível no catálogo,
+    medido pelo scorecard e descobrível pelos agentes.
+  tags: [aurora, mcp, ai, onboarding]
+spec:
+  owner: equipe-ia
+  type: service
+  parameters:
+    - title: Identidade do MCP
+      required: [name, description, owner]
+      properties:
+        name:
+          title: Nome do MCP
+          description: Identificador em kebab-case, prefixo mcp- (ex. mcp-pagamentos)
+          type: string
+          pattern: '^mcp-[a-z0-9-]*[a-z0-9]$'
+          ui:autofocus: true
+        description:
+          title: O que este MCP expõe?
+          description: Qual sistema ele encapsula e para quê os agentes o usam
+          type: string
+        owner:
+          title: Time dono
+          type: string
+          enum: [equipe-ia, plataforma]
+          enumNames: [Equipe IA, Plataforma]
+        system:
+          title: Sistema
+          type: string
+          enum: [hub-ia, integracoes-de-loja]
+          default: hub-ia
+    - title: Contrato inicial
+      required: [firstTool, firstToolDescription]
+      properties:
+        firstTool:
+          title: Nome da primeira tool
+          description: snake_case (ex. consultar_pedidos)
+          type: string
+          pattern: '^[a-z][a-z0-9_]*$'
+        firstToolDescription:
+          title: O que essa tool faz?
+          type: string
+    - title: Repositório
+      required: [repoUrl]
+      properties:
+        repoUrl:
+          title: Destino no GitHub
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts: [github.com]
+  steps:
+    - id: fetch-skeleton
+      name: Montar metadata e docs
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentName: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          system: ${{ parameters.system }}
+          firstTool: ${{ parameters.firstTool }}
+          firstToolDescription: ${{ parameters.firstToolDescription }}
+          repoOwner: ${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}
+          repoName: ${{ parameters.repoUrl | parseRepoUrl | pick('repo') }}
+    - id: publish
+      name: Publicar no GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+        repoVisibility: public
+    - id: register
+      name: Registrar no catálogo
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+  output:
+    links:
+      - url: ${{ steps.publish.output.remoteUrl }}
+        title: Repositório do MCP
+      - url: ${{ steps.register.output.entityRef }}
+        title: MCP no catálogo
+        icon: catalog

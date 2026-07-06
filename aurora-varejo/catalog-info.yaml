@@ -16,3 +16,6 @@ spec:
     - ./components/relatorio-loja.yaml
     - ./apis/api-estoque.yaml
     - ./apis/api-atendimento.yaml
+    - ./apis/mcp-estoque-tools.yaml
+    - ./apis/mcp-precos-tools.yaml
+    - ./apis/mcp-fidelidade-tools.yaml

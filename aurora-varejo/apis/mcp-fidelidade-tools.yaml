@@ -1,0 +1,39 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: mcp-fidelidade-tools
+  title: MCP Fidelidade — Tools
+  description: Contrato MCP do agente do programa de fidelidade
+  tags: [mcp, fidelidade, ai]
+spec:
+  type: mcp
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia
+  definition: |
+    # MCP tools/list — mcp-fidelidade v1.0.8
+    # Transporte: streamable-http | Auth: OAuth 2.1 (client credentials)
+    tools:
+      - name: consultar_saldo_pontos
+        description: Saldo de pontos e tier do cliente no programa Aurora+
+        inputSchema:
+          type: object
+          properties:
+            cliente_id: { type: string }
+          required: [cliente_id]
+      - name: listar_recompensas_elegiveis
+        description: Recompensas que o cliente pode resgatar com o saldo atual
+        inputSchema:
+          type: object
+          properties:
+            cliente_id: { type: string }
+            categoria: { type: string }
+          required: [cliente_id]
+      - name: resgatar_recompensa
+        description: Efetiva o resgate de uma recompensa (debita pontos)
+        inputSchema:
+          type: object
+          properties:
+            cliente_id: { type: string }
+            recompensa_id: { type: string }
+          required: [cliente_id, recompensa_id]

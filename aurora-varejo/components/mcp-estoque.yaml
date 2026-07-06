@@ -4,6 +4,8 @@ metadata:
   name: mcp-estoque
   description: Agente MCP para consulta e atualização de estoque em tempo real
   tags: [ai-model, mcp, estoque]
+  annotations:
+    backstage.io/techdocs-ref: url:https://github.com/veecode-platform/demo-catalog/tree/main/aurora-varejo/techdocs/mcp-estoque
 spec:
   type: ai-model
   lifecycle: production
@@ -11,3 +13,4 @@ spec:
   system: hub-ia
   providesApis:
     - api-estoque
+    - mcp-estoque-tools

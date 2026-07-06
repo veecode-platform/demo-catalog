@@ -1,0 +1,42 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: mcp-precos-tools
+  title: MCP Preços — Tools
+  description: Contrato MCP do agente de precificação dinâmica
+  tags: [mcp, precos, ai]
+spec:
+  type: mcp
+  lifecycle: production
+  owner: equipe-ia
+  system: hub-ia
+  definition: |
+    # MCP tools/list — mcp-precos v2.1.0
+    # Transporte: streamable-http | Auth: OAuth 2.1 (client credentials)
+    tools:
+      - name: consultar_preco
+        description: Retorna preço vigente de um SKU em uma loja, com campanhas aplicadas
+        inputSchema:
+          type: object
+          properties:
+            sku: { type: string }
+            loja: { type: string }
+          required: [sku, loja]
+      - name: simular_precificacao
+        description: Simula impacto de margem para um novo preço (não altera nada)
+        inputSchema:
+          type: object
+          properties:
+            sku: { type: string }
+            preco_proposto: { type: number }
+            lojas:
+              type: array
+              items: { type: string }
+          required: [sku, preco_proposto]
+      - name: listar_campanhas_ativas
+        description: Campanhas promocionais ativas por categoria ou loja
+        inputSchema:
+          type: object
+          properties:
+            categoria: { type: string }
+            loja: { type: string }

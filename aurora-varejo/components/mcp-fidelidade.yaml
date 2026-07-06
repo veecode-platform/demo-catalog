@@ -9,3 +9,5 @@ spec:
   lifecycle: production
   owner: equipe-ia
   system: hub-ia
+  providesApis:
+    - mcp-fidelidade-tools

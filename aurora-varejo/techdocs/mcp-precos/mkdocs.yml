@@ -1,0 +1,7 @@
+site_name: mcp-precos
+site_description: Documentação do agente MCP de precificação da Aurora Varejo
+nav:
+  - Visão geral: index.md
+  - Governança de preço: governanca.md
+plugins:
+  - techdocs-core

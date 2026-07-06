@@ -1,0 +1,7 @@
+site_name: ${{ values.componentName }}
+site_description: ${{ values.description }}
+nav:
+  - Visão geral: index.md
+  - Tools: tools.md
+plugins:
+  - techdocs-core
