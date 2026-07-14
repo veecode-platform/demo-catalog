@@ -12,10 +12,23 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
+  name: developers
+  description: Desenvolvedores habilitados a usar os recursos de engenharia da demo
+spec:
+  type: team
+  profile:
+    displayName: Desenvolvedores
+  children:
+    - plataforma
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
   name: plataforma
   description: Time de plataforma e infraestrutura
 spec:
   type: team
   profile:
     displayName: Plataforma
+  parent: developers
   children: []
