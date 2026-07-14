@@ -21,3 +21,15 @@ spec:
     email: bruno.dias@aurora-varejo.com.br
   memberOf:
     - plataforma
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: elesiann
+  description: Administrador da demo Aurora Varejo
+spec:
+  profile:
+    displayName: Giovani Correa
+    email: giovanimcorrea18@gmail.com
+  memberOf:
+    - plataforma
