@@ -12,6 +12,17 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
+  name: backstage-admins
+  description: Administradores do portal da demo Aurora Varejo
+spec:
+  type: team
+  profile:
+    displayName: Administradores do Portal
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
   name: developers
   description: Desenvolvedores habilitados a usar os recursos de engenharia da demo
 spec:
